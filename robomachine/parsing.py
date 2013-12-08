@@ -108,8 +108,10 @@ actions = Optional(actions)
 actions.leaveWhitespace()
 actions.setResultsName('actions')
 
-comment = Regex(r'(^\s*\#[^\n]*\n)|(\s\s+\#[^\n]*(?=\n))')
+comment = '#' + restOfLine  # Regex(r'(^\s*\#[^\n]*\n)|(\s\s+\#[^\n]*(?=\n))')
 comment.leaveWhitespace()
+
+initial_comments = OneOrMore(LineEnd())
 
 steps = ZeroOrMore(step).setResultsName('steps')
 
@@ -124,7 +126,7 @@ states = states.setResultsName('states')
 variables = ZeroOrMore(variable_definition).setResultsName('variables')
 rules = ZeroOrMore(rule+end_of_line).setResultsName('rules')
 rules.setParseAction(lambda t: [t[i] for i in range(len(t)) if i % 2 == 0])
-machine = Optional(settings_table).setResultsName('settings_table')+\
+machine = Optional(initial_comments)+Optional(settings_table).setResultsName('settings_table')+\
           Optional(variables_table).setResultsName('variables_table')+\
           machine_header+ZeroOrMore(end_of_line)+variables+\
           ZeroOrMore(end_of_line)+rules+\
