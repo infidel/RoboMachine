@@ -151,7 +151,7 @@ class Action(object):
         self.next_state.write_to(output)
 
 class Variable(object):
-    REGEX = r'\$\{[_A-Z][_A-Z0-9]*\}'
+    REGEX = r'\$\{[_A-Za-z][_A-Za-z0-9]*\}'
     PATTERN = re.compile(REGEX)
     _NO_VALUE = object()
 
